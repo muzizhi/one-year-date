@@ -1,0 +1,38 @@
+//给定数组，和target，寻找最接近target的三个数的和，唯一输出
+//思路：还是排序+双指针法，小右移，大左移，lr冲突退出while。不过这回需要两个存储，一个存res=sum，一个存min=abs。然后对应输出。
+
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        int res;
+        int min=abs(target-nums[0]-nums[1]-nums[2]);  // min给一个初值 abs||
+        int n=nums.size();
+        sort(nums.begin(),nums.end());
+        
+        for (int i=0;i<n-2;i++)  //只剩三个数 i、l、r
+        {
+            if(i>0 && nums[i]==nums[i-1])
+                continue;
+           
+            int l=i+1;
+            int r=n-1;
+            while(l<r)  //双指针 查找
+            {  
+                int sum=nums[i]+nums[l]+nums[r];
+                if(abs(target-sum)<=min)   //保存 min 和对应的 sum
+                {
+                    min=abs(target-sum);
+                    res=sum;
+                }
+            
+                if(sum<target)  //改变<向右移动， >向左移动
+                    l++;
+                else if(sum>target)
+                    r--;
+                else 
+                    return target;
+            }
+        }
+        return res;
+    }
+};
