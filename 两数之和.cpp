@@ -1,5 +1,5 @@
 //一列数据，输出数对应序号，和为target
-        if (carry>0)
+//思路：用哈希表存储，可以一边存一边判断
 
 class Solution { //哈希表
 public:
