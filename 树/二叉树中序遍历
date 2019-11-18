@@ -1,0 +1,86 @@
+//94 、二叉树的中序遍历：给定一个二叉树，返回它的中序 遍历。
+//思路：最简单的就是，递归操作。访问按照左、根、右的顺序。注意定义数组在局部函数中，不能在迭代中改变，所以利用分函数。
+//如A：根节点、B：左节点、C：右节点，前序顺序是ABC（根节点排最先，然后同级先左后右）；中序顺序是BAC(先左后根最后右）；后序顺序是BCA（先左后右最后根）。
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> mid; //定义整体变量，用函数调用
+        midfind(root,mid);
+        return mid;
+    }
+    void midfind(TreeNode* root,vector<int> &mid)
+    {
+        if(root!=NULL)
+        {
+            midfind(root->left,mid); //左
+            cout<<root->val; //cout可以，但是数组没有合并，错误，递归每次重新定义,所以分函数
+            mid.push_back(root->val); //中
+            midfind(root->right,mid); //右
+        }
+    }
+};
+
+/*
+//前序、后序的递归算法
+//先序遍历
+void preOrder(Tree * bt){
+      if(bt!=NULL){
+           visit(bt->data);
+           preOrder(bt->lChild);
+           preOrder(bt->rChild);
+    }       
+}
+
+//中序遍历 --采用比较难写的 迭代方法
+栈S;
+p= root;
+while(p || S不空){
+    while(p){
+        p入S;
+        p = p的左子树; //存储一系列的左值，压栈
+    }
+    p = S.top 出栈;
+    访问p;
+    p = p的右子树;
+}
+
+vector<int> inorderTraversal(TreeNode* root) {
+        stack<TreeNode*> S;  //栈定义
+        vector<int> v;
+        TreeNode* rt = root;
+        while(rt || S.size()){
+            while(rt){
+                S.push(rt);
+                rt=rt->left;
+            }
+            rt=S.top();  //树的最左值，挨个开始访问，其实包含了 左 和根
+            S.pop(); //pop(S)－栈顶元素弹出
+            v.push_back(rt->val); 
+            rt=rt->right; //这里显示输出 右，满足 左、根、右
+        }
+        return v;        
+    }
+
+作者：jason-2
+链接：https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/die-dai-fa-by-jason-2/
+
+//后序遍历
+void postOrder(Tree * bt){
+      if(bt!=NULL){
+           postOrder(bt->lChild);
+           postOrder(bt->rChild);
+           visit(bt->data);
+    }       
+}
+*/
