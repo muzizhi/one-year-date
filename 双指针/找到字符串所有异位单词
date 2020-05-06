@@ -1,0 +1,50 @@
+//438、字符串中所有字母异位词：一个s一个p，s中所有p的异位词的开始索引
+//思路：跟字符串组合很像，就是要给索引，滑动窗口最后一个框架练习，之后学习更灵活的表达。完成，就是输出换成了l的索引。
+//字母异位词指字母相同，但排列不同的字符串
+
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        unordered_map<char,int> need,window;
+        vector<int> res;
+        for(char c: p) need[c]++;
+
+        int l=0,r=0;
+        int valid=0;
+        while(r<s.size()){
+            char c=s[r];
+            r++;
+            if(need.count(c)){ //判定是，不在r，而是看p个数据之后，valid是否满足
+                window[c]++;
+                if(window[c]==need[c]){
+                    valid++;
+                }
+            }
+            //cout<<r<<valid<<endl;
+            while(r-l>=p.size()){ //这里是刚好3个，r多加了
+                char d=s[l];
+                //总感觉valid有点问题， abac   abc
+                if(valid==need.size()&&r-l==p.size()){ // 挨个看3个是不是
+                    cout<<l<<endl;
+                    res.push_back(l);
+                }
+                if(need.count(d)){
+                    if(window[d]==need[d]){
+                        valid--;
+                    }
+                    window[d]--;
+                }
+                //cout<<valid<<endl;
+                l++;
+                
+            }
+        }
+        return res;
+    }
+};
+
+
+/*
+这个跟字符串组合很像，就是要给索引，滑动窗口最后一个框架练习，之后学习更灵活的表达。
+*/
