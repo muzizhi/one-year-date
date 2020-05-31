@@ -1,0 +1,42 @@
+235、二叉搜索树的最近公共祖先：两个节点的祖先，最近/层数深好；自己算自己的祖先
+思路：递归就是找两个节点是否在哪，都在左，递归左；右递归右；一左一右返回根；如何判断左右，是二叉搜索树，值分左右。
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root==NULL|| root->val==q->val ||root->val==p->val){
+            cout<<root->val;  return root; //莫名其妙，明明root-》val=2，return root=6
+        } 
+        if(p->val<root->val&& q->val<root->val){
+            return lowestCommonAncestor(root->left,p,q); //wrong1h，忘记return
+        }
+        if(p->val>root->val&& q->val> root->val){
+            return lowestCommonAncestor(root->right,p,q);
+        }
+
+        return root;  // 若不是上面两个判断，则表明两个值分跨在根值左右或有一值为根，则根就是最近
+    }
+
+};
+
+
+/*
+这个分割点就是能让节点 p和节点 q 不能在同一颗子树上的那个节点，或者是节点自身，节点是另一个节点的父亲节点
+
+递归就是找两个节点是否在哪，都在左，递归左；右递归右；一左一右返回根；
+如何判断左右，是二叉搜索树，值分左右
+
+为啥错啊，不管啥，返回全都是最上面的root////服了忘记return
+
+*/
