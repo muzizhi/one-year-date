@@ -1,0 +1,59 @@
+
+23、二叉搜索树的后续遍历序列：判断一个数组是否是二叉树后序，数字不重复
+思路：小大小大？感觉不对。官方1:递归，最右根，然后找第一个大的是右节点，后续都要大，然后递归子节点。
+官方2:单调栈理解有点难，逆序后序是根右左， 单调说明 增增，一旦减就是左（更新根）
+
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        if(postorder.size()<2) return true;
+        //递归好理解
+        return prove(postorder,0,postorder.size()-1);
+    }
+    bool prove(vector<int> postorder,int left,int right){
+        if(left>=right) return true;
+        int i=left;
+        while(i<right && postorder[i]<postorder[right]){
+            //if(postorder[i]<postorder[right])
+                i++;
+        }
+        for(int k=i;k<right;k++){
+            if(postorder[k]<postorder[right]){
+                return false;
+            }
+        }
+        //递归
+        return prove(postorder,left,right-1);
+        //return prove(postorder,left,i-1) && prove(postorder,i,right-1)
+    }
+};
+
+
+// 小 大 小 大 小 吗，意外呢 wrong
+/*
+最后是根，然后找第一个大于根的是右，然后其后面都要大于根,递归.[]不一样
+
+单调栈理解有点难，逆序后序是根右左， 单调说明 增增，一旦减就是左（更新根），然后比新根大大，小小，一趟结束
+
+public boolean verifyPostorder(int[] postorder) {  java
+        // 单调栈使用，单调递增的单调栈
+        Deque<Integer> stack = new LinkedList<>();
+        int pervElem = Integer.MAX_VALUE;
+        // 逆向遍历，就是翻转的先序遍历
+        for (int i = postorder.length - 1;i>=0;i--){
+            // 左子树元素必须要小于递增栈被peek访问的元素，否则就不是二叉搜索树
+            if (postorder[i] > pervElem){
+                return false;
+            }
+            while (!stack.isEmpty() && postorder[i] < stack.peek()){
+                // 数组元素小于单调栈的元素了，表示往左子树走了，记录下上个根节点
+                // 找到这个左子树对应的根节点，之前右子树全部弹出，不再记录，因为不可能在往根节点的右子树走了
+                pervElem = stack.pop();
+            }
+            // 这个新元素入栈
+            stack.push(postorder[i]);
+        }
+        return true;
+    }
+}
+*/
